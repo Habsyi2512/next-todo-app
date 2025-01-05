@@ -1,11 +1,18 @@
-import React from "react";
+import React, { HTMLProps } from "react";
+
+interface ComponentProps extends HTMLProps<HTMLDivElement> {
+  children: React.ReactNode;
+  className?: string;
+}
 
 export default function ContentDiv({
   children,
   className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return <div className={`${className} p-5`}>{children}</div>;
+  ...props
+}: ComponentProps) {
+  return (
+    <div {...props} className={`${className} p-5`}>
+      {children}
+    </div>
+  );
 }
