@@ -9,11 +9,16 @@ interface ComponentProps {
 }
 
 export default function TodoAction({ id }: ComponentProps) {
+  function handleCompleteButton(id: number) {
+    console.log("complete button clicked", id);
+    // Call your API endpoint to mark the todo as completed
+  }
+
   return (
     <ContentDiv className="flex space-x-2 items-center">
       <button
         onClick={() => {
-          console.log("id", id);
+          handleCompleteButton(id);
         }}
         className="p-2 bg-neutral-600 hover:bg-neutral-700 active:bg-neutral-600 rounded-lg"
       >

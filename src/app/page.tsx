@@ -1,11 +1,11 @@
 import HeaderTodoSection from "@/components/templates/HeaderTodoSection";
-import TodoList from "@/components/templates/todo-list";
+import IncompleteTodoList from "@/components/templates/incomplete-todo-list";
 
 export default function Home() {
   return (
     <>
       <HeaderTodoSection />
-      <TodoList />
+      <IncompleteTodoList />
     </>
   );
 }

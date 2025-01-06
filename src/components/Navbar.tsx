@@ -13,7 +13,6 @@ export default function Navbar() {
     { label: "Completed", href: "/completed" },
     { label: "Removed", href: "/removed" },
   ];
-  console.log(pathname);
   return (
     <>
       <div>

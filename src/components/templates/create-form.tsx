@@ -4,13 +4,13 @@ import { ModalContext } from "@/context/ModalContext";
 import React, { useContext } from "react";
 import { TodoValidation } from "@/lib/validationSchema";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { getAllTodo } from "@/actions/fetch";
+import { getAllIncompleteList } from "@/actions/fetch";
 import toast from "react-hot-toast";
 import { TodoContext } from "@/context/TodoContext";
 
 export default function CreateForm() {
   const { setIsOpenCreateForm } = useContext(ModalContext);
-  const { setTodos } = useContext(TodoContext);
+  const { setIncompleteTodos } = useContext(TodoContext);
   async function handleSubmit(values: { title: string }) {
     try {
       const formData = new FormData();
@@ -18,8 +18,8 @@ export default function CreateForm() {
       const data = await createTodo(formData);
       setIsOpenCreateForm(false);
       if (data) {
-        const todos = await getAllTodo();
-        setTodos(todos);
+        const todos = await getAllIncompleteList();
+        setIncompleteTodos(todos);
         toast.success("Success", {
           style: {
             backgroundColor: "#404040",
@@ -34,7 +34,6 @@ export default function CreateForm() {
   }
 
   return (
-    // Render the form
     <Formik
       initialValues={{ title: "" }}
       onSubmit={(values) => {
@@ -44,7 +43,7 @@ export default function CreateForm() {
       className="py-5 space-y-3"
     >
       <Form className="space-y-3">
-        {/* Input for the todo title */}
+      
         <div>
           <Field
             name="title"
@@ -54,7 +53,7 @@ export default function CreateForm() {
           />
           <ErrorMessage name="title" component={"p"} className="text-red-500" />
         </div>
-        {/* Submit button */}
+       
         <button
           type="submit"
           className="block px-4 py-2 rounded-lg hover:bg-green-700 active:bg-green-600 bg-green-600 "

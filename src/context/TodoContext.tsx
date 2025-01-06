@@ -1,40 +1,35 @@
 "use client";
 
-import { getAllTodoList } from "@/actions/fetch";
 import { TypeTodo } from "@/types/interface";
-import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
-import { LoadingContext } from "./LoadingContext";
+import { createContext, Dispatch, SetStateAction, useState } from "react";
 
 export type TypeTodoContext = {
-  todos: TypeTodo[];
-  setTodos: Dispatch<SetStateAction<TypeTodo[]>>;
+  incompleteTodos: TypeTodo[];
+  completedTodos: TypeTodo[];
+  setIncompleteTodos: Dispatch<SetStateAction<TypeTodo[]>>;
+  setCompletedTodos: Dispatch<SetStateAction<TypeTodo[]>>;
 };
 
 export const TodoContext = createContext<TypeTodoContext>({
-  todos: [],
-  setTodos: () => {},
+  incompleteTodos: [],
+  completedTodos: [],
+  setCompletedTodos: () => {},
+  setIncompleteTodos: () => {},
 });
 
 export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
-  const [todos, setTodos] = useState<TypeTodo[]>([]);
-  const { setLoading } = useContext(LoadingContext);
+  const [incompleteTodos, setIncompleteTodos] = useState<TypeTodo[]>([]);
+  const [completedTodos, setCompletedTodos] = useState<TypeTodo[]>([]);
 
-  async function fetchTodo() {
-      setLoading(true); // Set loading ke true sebelum fetch
-      try {
-        const todos = await getAllTodoList();
-        setTodos(todos);
-      } catch (error) {
-        console.error("Error fetching todos:", error);
-      } finally {
-        setLoading(false); // Set loading ke false setelah selesai
-      }
-    }
-    useEffect(() => {
-      fetchTodo();
-    }, []);
   return (
-    <TodoContext.Provider value={{ todos, setTodos }}>
+    <TodoContext.Provider
+      value={{
+        incompleteTodos,
+        completedTodos,
+        setCompletedTodos,
+        setIncompleteTodos,
+      }}
+    >
       {children}
     </TodoContext.Provider>
   );
