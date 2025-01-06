@@ -8,5 +8,5 @@ export async function createTodo(form: FormData) {
       title: form.get("title") as string,
     },
   });
-  console.log("actions = ", actions);
+  return actions;
 }

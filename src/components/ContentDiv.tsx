@@ -11,7 +11,7 @@ export default function ContentDiv({
   ...props
 }: ComponentProps) {
   return (
-    <div {...props} className={`${className} p-5`}>
+    <div {...props} className={`${className} p-2`}>
       {children}
     </div>
   );

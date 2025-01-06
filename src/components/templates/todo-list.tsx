@@ -1,15 +1,30 @@
-import React from "react";
+"use client";
+import React, { useContext } from "react";
 import Card from "@/components/Card";
 import ContentDiv from "@/components/ContentDiv";
-import { prisma } from "@/lib/prisma";
+// import { getAllTodo } from "@/actions/fetch";
+import { TodoContext } from "@/context/TodoContext";
+import TodoAction from "./TodoAction";
+import { LoadingContext } from "@/context/LoadingContext";
 
-export default async function TodoList() {
-  const todos = await prisma.todo.findMany();
-  return todos.map((todo) => {
-    return (
-      <Card key={todo.id}>
-        <ContentDiv>{todo.title}</ContentDiv>
-      </Card>
-    );
-  });
+export default function TodoList() {
+  const { todos } = useContext(TodoContext);
+  const { loading } = useContext(LoadingContext);
+
+  return loading ? (
+    <div>Loading...</div>
+  ) : todos.length > 0 ? (
+    <div className="space-y-3">
+      {todos.map((todo) => {
+        return (
+          <Card key={todo.id} className="flex pl-2 items-center">
+            <ContentDiv className="flex-1 bg-neutral-600 rounded-lg">{todo.title}</ContentDiv>
+            <TodoAction id={todo.id} />
+          </Card>
+        );
+      })}
+    </div>
+  ) : (
+    <div>Add your first todo</div>
+  );
 }

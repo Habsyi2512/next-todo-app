@@ -13,7 +13,7 @@ export default function Card({
   return (
     <div
       {...props}
-      className={`${className} mb-3 border border-neutral-700/80 rounded-xl bg-neutral-800`}
+      className={`${className} border border-neutral-700/80 rounded-xl bg-neutral-800`}
     >
       {children}
     </div>

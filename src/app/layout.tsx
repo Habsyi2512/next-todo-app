@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ModalProvider } from "@/context/ModalContext";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
+import { TodoProvider } from "@/context/TodoContext";
+import { LoadingProvider } from "@/context/LoadingContext";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,7 +32,19 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Toaster position="top-center" reverseOrder={false} />
+        <Suspense fallback={<div>loading brow</div>}>
+          <LoadingProvider>
+            <ModalProvider>
+              <TodoProvider>
+                <main className="w-full max-w-5xl py-16 mx-auto">
+                  <Navbar />
+                  {children}
+                </main>
+              </TodoProvider>
+            </ModalProvider>
+          </LoadingProvider>
+        </Suspense>
       </body>
     </html>
   );

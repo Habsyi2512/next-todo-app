@@ -1,7 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export default function Divider() {
-  return (
-    <div>Divider</div>
-  )
+  return <hr className="border-neutral-700 my-5" />;
 }
