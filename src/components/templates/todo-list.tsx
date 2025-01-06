@@ -4,8 +4,7 @@ import ContentDiv from "@/components/ContentDiv";
 import { prisma } from "@/lib/prisma";
 
 export default async function TodoList() {
-  const todos = await prisma.todi.findMany();
-  console.log('data = ', todos)
+  const todos = await prisma.todo.findMany();
   return todos.map((todo) => {
     return (
       <Card key={todo.id}>
