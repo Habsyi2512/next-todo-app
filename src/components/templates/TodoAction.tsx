@@ -3,42 +3,44 @@ import ContentDiv from "../ContentDiv";
 import { CheckCircleIcon } from "../icons/CheckCircleIcon";
 import { RemoveIcon } from "../icons/RemoveIcon";
 import { PencilIcon } from "../icons/PencilIcon";
-import { handleCompletedTodo } from "@/actions/actions";
-import toast from "react-hot-toast";
+// import { handleCompletedTodo } from "@/actions/actions";
+// import toast from "react-hot-toast";
 import { TypeTodo } from "@/types/interface";
-import useReload from "@/hooks/useReload";
+// import useReload from "@/hooks/useReload";
 import Tooltip from "../Tooltip";
+import { useHandleCompleteButton } from "@/hooks/useHandleCompleteButton";
 
 interface ComponentProps {
   todo: TypeTodo;
 }
 
 export default function TodoAction({ todo }: ComponentProps) {
-  const { reloadIncompleteTodos, reloadCompletedTodos } = useReload();
+  // const { reloadIncompleteTodos, reloadCompletedTodos } = useReload();
+  const handleButton = useHandleCompleteButton();
 
-  const handleCompleteButton = async (id: number, setCompleted: boolean) => {
-    const message = setCompleted
-      ? "Task has been set to Completed."
-      : "Task has been set to Incomplete.";
-    try {
-      const success = await handleCompletedTodo(id, setCompleted);
-      toast.success(message, {
-        style: {
-          backgroundColor: "#404040",
-          color: "#d4d4d4",
-        },
-      });
-      if (success) {
-        if (setCompleted) {
-          await reloadIncompleteTodos();
-        } else {
-          await reloadCompletedTodos();
-        }
-      }
-    } catch (err) {
-      console.error("Error marking todo as completed:", err);
-    }
-  };
+  // const handleCompleteButton = async (id: number, setCompleted: boolean) => {
+  //   const message = setCompleted
+  //     ? "Task has been set to Completed."
+  //     : "Task has been set to Incomplete.";
+  //   try {
+  //     const success = await handleCompletedTodo(id, setCompleted);
+  //     toast.success(message, {
+  //       style: {
+  //         backgroundColor: "#404040",
+  //         color: "#d4d4d4",
+  //       },
+  //     });
+  //     if (success) {
+  //       if (setCompleted) {
+  //         await reloadIncompleteTodos();
+  //       } else {
+  //         await reloadCompletedTodos();
+  //       }
+  //     }
+  //   } catch (err) {
+  //     console.error("Error marking todo as completed:", err);
+  //   }
+  // };
 
   const buttonClasses = (isCompleted: boolean, colorClass: string) =>
     `p-2 ${
@@ -50,7 +52,7 @@ export default function TodoAction({ todo }: ComponentProps) {
   return (
     <ContentDiv className="flex space-x-2 items-center">
       <button
-        onClick={() => handleCompleteButton(todo.id, !todo.completed)}
+        onClick={() => handleButton(todo.id, !todo.completed)}
         className={buttonClasses(
           todo.completed,
           "bg-green-600 hover:bg-green-700 active:bg-green-600"
