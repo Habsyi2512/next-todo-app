@@ -5,21 +5,21 @@ import ContentDiv from "@/components/ContentDiv";
 import { TodoContext } from "@/context/TodoContext";
 import TodoAction from "./TodoAction";
 import { LoadingContext } from "@/context/LoadingContext";
-import { getTodoList } from "@/actions/fetch";
+import { getTodos } from "@/actions/fetch";
 
 export default function CompletedTodoList() {
   const { completedTodos, setCompletedTodos } = useContext(TodoContext);
   const { loading, setLoading } = useContext(LoadingContext);
 
   async function fetchCompletedTodo() {
-    setLoading(true); 
+    setLoading(true);
     try {
-      const todos = await getTodoList({ completed: true });
+      const todos = await getTodos({ completed: true });
       setCompletedTodos(todos);
     } catch (error) {
       console.error("Error fetching todos:", error);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   }
   useEffect(() => {

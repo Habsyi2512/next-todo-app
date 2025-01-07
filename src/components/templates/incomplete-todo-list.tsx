@@ -5,7 +5,7 @@ import ContentDiv from "@/components/ContentDiv";
 import { TodoContext } from "@/context/TodoContext";
 import TodoAction from "./TodoAction";
 import { LoadingContext } from "@/context/LoadingContext";
-import { getTodoList } from "@/actions/fetch";
+import { getTodos } from "@/actions/fetch";
 
 export default function IncompleteTodoList() {
   const { incompleteTodos, setIncompleteTodos } = useContext(TodoContext);
@@ -14,7 +14,7 @@ export default function IncompleteTodoList() {
   async function fetchIncompleteTodo() {
     setLoading(true);
     try {
-      const todos = await getTodoList({ completed: false });
+      const todos = await getTodos({ completed: false });
       setIncompleteTodos(todos);
     } catch (error) {
       console.error("Error fetching todos:", error);

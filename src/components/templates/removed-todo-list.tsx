@@ -5,7 +5,8 @@ import ContentDiv from "@/components/ContentDiv";
 import { TodoContext } from "@/context/TodoContext";
 import TodoAction from "./TodoAction";
 import { LoadingContext } from "@/context/LoadingContext";
-import { getTodoList } from "@/actions/fetch";
+import { getTodos } from "@/actions/fetch";
+// import { prisma } from "@/lib/prisma";
 
 export default function RemovedTodoList() {
   const { removedTodos, setRemovedTodos } = useContext(TodoContext);
@@ -14,7 +15,7 @@ export default function RemovedTodoList() {
   async function fetchRemovedTodo() {
     setLoading(true);
     try {
-      const todos = await getTodoList({ removed: true });
+      const todos = await getTodos({ deleted_at: { not: null } });
       setRemovedTodos(todos);
     } catch (error) {
       console.error("Error fetching todos:", error);
@@ -42,6 +43,6 @@ export default function RemovedTodoList() {
       })}
     </div>
   ) : (
-    <div>No Completed Todos Here</div>
+    <div>No Removed Todos Here</div>
   );
 }
