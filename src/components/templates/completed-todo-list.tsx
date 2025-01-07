@@ -6,6 +6,7 @@ import { TodoContext } from "@/context/TodoContext";
 import TodoAction from "./TodoAction";
 import { LoadingContext } from "@/context/LoadingContext";
 import { getTodos } from "@/actions/fetch";
+import getFormattedDate from "@/utils/dateUtils";
 
 export default function CompletedTodoList() {
   const { completedTodos, setCompletedTodos } = useContext(TodoContext);
@@ -34,7 +35,16 @@ export default function CompletedTodoList() {
         return (
           <Card key={todo.id} className="flex pl-2 items-center">
             <ContentDiv className="flex-1 bg-neutral-600 rounded-lg">
-              {todo.title}
+              <p className="mb-1">{todo.title}</p>
+              <p className="text-xs">
+                <span>
+                  Created At: {getFormattedDate(String(todo.created_at))}
+                </span>{" "}
+                |{" "}
+                <span>
+                  Last Update: {getFormattedDate(String(todo.created_at))}
+                </span>{" "}
+              </p>
             </ContentDiv>
             <TodoAction todo={todo} />
           </Card>

@@ -2,7 +2,7 @@ import useReload from "@/hooks/useReload";
 import { handleCompletedTodo } from "@/actions/actions";
 import toast from "react-hot-toast";
 
-export function useHandleCompleteButton() {
+export default function useHandleCompleteTodo() {
   const { reloadIncompleteTodos, reloadCompletedTodos } = useReload();
 
   const handleCompleteButton = async (id: number, setCompleted: boolean) => {
@@ -31,5 +31,5 @@ export function useHandleCompleteButton() {
     }
   };
 
-  return handleCompleteButton; // Mengembalikan fungsi yang bisa dipakai di komponen
+  return {handleCompleteButton}; // Mengembalikan fungsi yang bisa dipakai di komponen
 }

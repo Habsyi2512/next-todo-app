@@ -6,6 +6,7 @@ import { TodoContext } from "@/context/TodoContext";
 import TodoAction from "./TodoAction";
 import { LoadingContext } from "@/context/LoadingContext";
 import { getTodos } from "@/actions/fetch";
+import getFormattedDate from "@/utils/dateUtils";
 
 export default function IncompleteTodoList() {
   const { incompleteTodos, setIncompleteTodos } = useContext(TodoContext);
@@ -14,7 +15,7 @@ export default function IncompleteTodoList() {
   async function fetchIncompleteTodo() {
     setLoading(true);
     try {
-      const todos = await getTodos({ completed: false });
+      const todos = await getTodos({ completed: false, deleted_at: null });
       setIncompleteTodos(todos);
     } catch (error) {
       console.error("Error fetching todos:", error);
@@ -34,7 +35,16 @@ export default function IncompleteTodoList() {
         return (
           <Card key={todo.id} className="flex pl-2 items-center">
             <ContentDiv className="flex-1 bg-neutral-600 rounded-lg">
-              {todo.title}
+              <p className="mb-1">{todo.title}</p>
+              <p className="text-xs">
+                <span>
+                  Created At: {getFormattedDate(String(todo.created_at))}
+                </span>{" "}
+                |{" "}
+                <span>
+                  Last Update: {getFormattedDate(String(todo.created_at))}
+                </span>{" "}
+              </p>
             </ContentDiv>
             <TodoAction todo={todo} />
           </Card>
