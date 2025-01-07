@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 
+
 export async function createTodo(form: FormData) {
   const actions = await prisma.todo.create({
     data: {
@@ -9,4 +10,12 @@ export async function createTodo(form: FormData) {
     },
   });
   return actions;
+}
+
+export async function handleCompletedTodo(id: number, setCompleted: boolean) {
+  const updateTodo = await prisma.todo.update({
+    where: { id: id },
+    data: { completed: setCompleted },
+  });
+  return updateTodo;
 }

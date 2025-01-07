@@ -5,21 +5,21 @@ import ContentDiv from "@/components/ContentDiv";
 import { TodoContext } from "@/context/TodoContext";
 import TodoAction from "./TodoAction";
 import { LoadingContext } from "@/context/LoadingContext";
-import { getAllIncompleteList } from "@/actions/fetch";
+import { getTodoList } from "@/actions/fetch";
 
 export default function IncompleteTodoList() {
   const { incompleteTodos, setIncompleteTodos } = useContext(TodoContext);
   const { loading, setLoading } = useContext(LoadingContext);
 
   async function fetchIncompleteTodo() {
-    setLoading(true); // Set loading ke true sebelum fetch
+    setLoading(true);
     try {
-      const todos = await getAllIncompleteList();
+      const todos = await getTodoList({ completed: false });
       setIncompleteTodos(todos);
     } catch (error) {
       console.error("Error fetching todos:", error);
     } finally {
-      setLoading(false); // Set loading ke false setelah selesai
+      setLoading(false);
     }
   }
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function IncompleteTodoList() {
             <ContentDiv className="flex-1 bg-neutral-600 rounded-lg">
               {todo.title}
             </ContentDiv>
-            <TodoAction id={todo.id} />
+            <TodoAction todo={todo} />
           </Card>
         );
       })}

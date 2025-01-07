@@ -6,6 +6,8 @@ import { createContext, Dispatch, SetStateAction, useState } from "react";
 export type TypeTodoContext = {
   incompleteTodos: TypeTodo[];
   completedTodos: TypeTodo[];
+  removedTodos: TypeTodo[];
+  setRemovedTodos: Dispatch<SetStateAction<TypeTodo[]>>;
   setIncompleteTodos: Dispatch<SetStateAction<TypeTodo[]>>;
   setCompletedTodos: Dispatch<SetStateAction<TypeTodo[]>>;
 };
@@ -13,6 +15,8 @@ export type TypeTodoContext = {
 export const TodoContext = createContext<TypeTodoContext>({
   incompleteTodos: [],
   completedTodos: [],
+  removedTodos: [],
+  setRemovedTodos: () => {},
   setCompletedTodos: () => {},
   setIncompleteTodos: () => {},
 });
@@ -20,14 +24,17 @@ export const TodoContext = createContext<TypeTodoContext>({
 export const TodoProvider = ({ children }: { children: React.ReactNode }) => {
   const [incompleteTodos, setIncompleteTodos] = useState<TypeTodo[]>([]);
   const [completedTodos, setCompletedTodos] = useState<TypeTodo[]>([]);
+  const [removedTodos, setRemovedTodos] = useState<TypeTodo[]>([]);
 
   return (
     <TodoContext.Provider
       value={{
         incompleteTodos,
         completedTodos,
+        removedTodos,
         setCompletedTodos,
         setIncompleteTodos,
+        setRemovedTodos,
       }}
     >
       {children}

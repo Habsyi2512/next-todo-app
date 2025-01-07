@@ -7,30 +7,30 @@ import TodoAction from "./TodoAction";
 import { LoadingContext } from "@/context/LoadingContext";
 import { getTodoList } from "@/actions/fetch";
 
-export default function CompletedTodoList() {
-  const { completedTodos, setCompletedTodos } = useContext(TodoContext);
+export default function RemovedTodoList() {
+  const { removedTodos, setRemovedTodos } = useContext(TodoContext);
   const { loading, setLoading } = useContext(LoadingContext);
 
-  async function fetchCompletedTodo() {
-    setLoading(true); 
+  async function fetchRemovedTodo() {
+    setLoading(true);
     try {
-      const todos = await getTodoList({ completed: true });
-      setCompletedTodos(todos);
+      const todos = await getTodoList({ removed: true });
+      setRemovedTodos(todos);
     } catch (error) {
       console.error("Error fetching todos:", error);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   }
   useEffect(() => {
-    fetchCompletedTodo();
+    fetchRemovedTodo();
   }, []);
 
   return loading ? (
     <div>Loading...</div>
-  ) : completedTodos.length > 0 ? (
+  ) : removedTodos.length > 0 ? (
     <div className="space-y-3">
-      {completedTodos.map((todo) => {
+      {removedTodos.map((todo) => {
         return (
           <Card key={todo.id} className="flex pl-2 items-center">
             <ContentDiv className="flex-1 bg-neutral-600 rounded-lg">
