@@ -1,77 +1,141 @@
-import React from "react";
+"use client";
+import React, { useState, useRef, useCallback, useEffect, JSX } from "react";
 import ContentDiv from "../ContentDiv";
 import { CheckCircleIcon } from "../icons/CheckCircleIcon";
 import { RemoveIcon } from "../icons/RemoveIcon";
 import { PencilIcon } from "../icons/PencilIcon";
-import { TypeTodo } from "@/types/interface";
-import Tooltip from "../Tooltip";
 import { TrashIcon } from "../icons/TrashIcon";
 import useHandleCompleteTodo from "@/hooks/useHandleCompleteTodo";
 import useHandleRemoveTodo from "@/hooks/useHandleRemoveTodo";
 import { RecoverIcon } from "../icons/RecoverIcon";
+import { EllipsisVerticalIcon } from "../icons/EllipsisVerticalIcon";
+import { TypeTodo } from "@/types/interface";
 
-interface ComponentProps {
+
+interface TodoActionProps {
   todo: TypeTodo;
 }
 
-export default function TodoAction({ todo }: ComponentProps) {
+interface ActionItem {
+  id: string;
+  icon: JSX.Element;
+  text: string;
+  onClick: () => void;
+  disabled?: boolean;
+  visible?: boolean;
+}
+
+const TodoAction: React.FC<TodoActionProps> = ({ todo }) => {
+  const [dropdown, setDropdown] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   const { handleCompleteButton } = useHandleCompleteTodo();
   const { handleRemoveButton } = useHandleRemoveTodo();
-  console.log("todo =", todo);
-  const buttonClasses = (isCompleted: boolean, colorClass: string) =>
-    `p-2 h-[60px] flex items-center justify-center aspect-square ${
-      isCompleted
-        ? colorClass
-        : "bg-neutral-600 hover:bg-neutral-700 active:bg-neutral-600"
-    } rounded-lg`;
+
+  const handleDropdownToggle = useCallback(() => {
+    setDropdown((prev) => !prev);
+  }, []);
+
+  const handleClickOutside = useCallback((e: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(e.target as Node)
+    ) {
+      setDropdown(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [handleClickOutside]);
+
+  const actionItems: ActionItem[] = [
+    {
+      id: "complete",
+      icon: <CheckCircleIcon className="size-4" />,
+      text: todo.completed ? "Mark as incompleted" : "Mark as completed",
+      onClick: () => handleCompleteButton(todo.id, !todo.completed),
+      visible: todo.deleted_at !== null,
+    },
+    {
+      id: "remove",
+      icon: <RemoveIcon className="size-4" />,
+      text: "Remove",
+      onClick: () => handleRemoveButton(todo.id),
+      disabled: todo.deleted_at !== null,
+    },
+    {
+      id: "edit",
+      icon: <PencilIcon className="size-4" />,
+      text: "Edit",
+      onClick: () => {}, // Action for Edit can be added here
+      visible: todo.deleted_at !== null,
+    },
+    {
+      id: "restore",
+      icon: <RecoverIcon className="size-4" />,
+      text: "Restore",
+      onClick: () => {},
+      visible: todo.deleted_at === null,
+    },
+    {
+      id: "delete",
+      icon: <TrashIcon className="size-4" />,
+      text: "Delete Permanently",
+      onClick: () => {},
+      visible: todo.deleted_at === null,
+    },
+  ];
+
+
 
   return (
     <ContentDiv className="flex space-x-2 items-center">
-      <>
+      {/* <div onClick={getTimeInIndonesiaTimezone}>klik</div> */}
+      <div className="relative" ref={dropdownRef}>
         <button
-          onClick={() => handleCompleteButton(todo.id, !todo.completed)}
-          className={buttonClasses(
-            todo.completed,
-            "bg-green-600 hover:bg-green-700 active:bg-green-600"
-          )}
+          onClick={handleDropdownToggle}
+          className="hover:bg-neutral-600 active:bg-neutral-700 rounded-lg p-2"
+          aria-expanded={dropdown ? "true" : "false"}
+          aria-haspopup="true"
+          aria-controls="dropdown-menu"
         >
-          <CheckCircleIcon className="size-6" />
-          <Tooltip
-            text={
-              todo.completed
-                ? "Click to mark as incomplete"
-                : "Click to mark as completed"
-            }
-          />
+          <EllipsisVerticalIcon className="size-5" />
         </button>
-        <button
-          onClick={() => {
-            handleRemoveButton(todo.id);
-          }}
-          className="p-2 h-[60px] flex items-center justify-center aspect-square bg-red-600 hover:bg-red-700 active:bg-red-600 rounded-lg"
-        >
-          <RemoveIcon className="size-6" />
-          <Tooltip text="Remove Task" />
-        </button>
-        <button className="p-2 h-[60px] flex items-center justify-center aspect-square bg-blue-600 hover:bg-blue-700 active:bg-blue-600 rounded-lg">
-          <PencilIcon className="size-6" />
-          <Tooltip text="Edit Task" />
-        </button>
-      </>
-
-      {todo.deleted_at === null && (
-        <>
-          <button className="p-2 bg-blue-600 h-[60px] flex items-center justify-center aspect-square hover:bg-blue-700 active:bg-blue-600 rounded-lg">
-            <RecoverIcon className="size-6" />
-            <Tooltip text="Delete Task" />
-          </button>
-
-          <button className="p-2 h-[60px] flex items-center justify-center aspect-square bg-red-600 hover:bg-red-700 active:bg-red-600 rounded-lg">
-            <TrashIcon className="size-6" />
-            <Tooltip text="Delete Task" />
-          </button>
-        </>
-      )}
+        {dropdown && (
+          <ul
+            id="dropdown-menu"
+            className="bg-neutral-700 border border-neutral-600 space-y-1 top-11 z-20 text-xs rounded-lg p-1 absolute"
+          >
+            {actionItems.map(({ id, icon, text, visible, onClick, disabled }) =>
+              !visible ? (
+                <li
+                  key={id}
+                  className={`hover:bg-neutral-600 rounded-md ${
+                    disabled && "hover:bg-transparent"
+                  }`}
+                >
+                  <button
+                    onClick={onClick}
+                    disabled={disabled}
+                    className={`flex items-center p-2 space-x-2 w-full rounded-md ${
+                      disabled ? "cursor-not-allowed opacity-50" : ""
+                    }`}
+                  >
+                    {icon}
+                    <p className="truncate">{text}</p>
+                  </button>
+                </li>
+              ) : null
+            )}
+          </ul>
+        )}
+      </div>
     </ContentDiv>
   );
-}
+};
+
+export default TodoAction;

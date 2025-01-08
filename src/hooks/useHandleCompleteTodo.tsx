@@ -31,5 +31,5 @@ export default function useHandleCompleteTodo() {
     }
   };
 
-  return {handleCompleteButton}; // Mengembalikan fungsi yang bisa dipakai di komponen
+  return { handleCompleteButton }; // Mengembalikan fungsi yang bisa dipakai di komponen
 }

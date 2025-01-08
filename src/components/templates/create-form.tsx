@@ -1,11 +1,11 @@
 "use client";
-import { createTodo } from "@/actions/actions";
 import { ModalContext } from "@/context/ModalContext";
 import React, { useContext } from "react";
 import { TodoValidation } from "@/lib/validationSchema";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import toast from "react-hot-toast";
 import useReload from "@/hooks/useReload";
+import axios, { AxiosResponse } from "axios";
 
 export default function CreateForm() {
   const { setIsOpenCreateForm } = useContext(ModalContext);
@@ -14,9 +14,11 @@ export default function CreateForm() {
     try {
       const formData = new FormData();
       formData.append("title", values.title);
-      const data = await createTodo(formData);
+      const data: AxiosResponse = await axios.post('/api/todo', {
+        title: values.title,
+      })
       setIsOpenCreateForm(false);
-      if (data) {
+      if (data.status === 201) {
         await reloadIncompleteTodos();
         toast.success("Success", {
           style: {
