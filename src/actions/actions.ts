@@ -18,11 +18,17 @@ export async function handleCompletedTodo(args: Prisma.TodoUpdateArgs) {
 }
 
 export async function removeTodoById(id: number) {
-  console.log("id", id);
   const updateTodo = await prisma.todo.update({
     where: { id: id },
     data: { deleted_at: getTimezoneID() },
   });
+  return updateTodo;
+}
 
+export async function restoreTodoById(id: number) {
+  const updateTodo = await prisma.todo.update({
+    where: { id: id },
+    data: { deleted_at: null },
+  });
   return updateTodo;
 }

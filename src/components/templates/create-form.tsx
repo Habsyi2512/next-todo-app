@@ -4,7 +4,7 @@ import React, { useContext } from "react";
 import { TodoValidation } from "@/lib/validationSchema";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import toast from "react-hot-toast";
-import useReload from "@/hooks/useReload";
+import useReload from "@/hooks/todo/useReload";
 import axios, { AxiosResponse } from "axios";
 
 export default function CreateForm() {
@@ -14,13 +14,13 @@ export default function CreateForm() {
     try {
       const formData = new FormData();
       formData.append("title", values.title);
-      const data: AxiosResponse = await axios.post('/api/todo', {
+      const data: AxiosResponse = await axios.post("/api/todo/create-todo", {
         title: values.title,
-      })
+      });
       setIsOpenCreateForm(false);
       if (data.status === 201) {
         await reloadIncompleteTodos();
-        toast.success("Success", {
+        toast.success("Success! Todo Created", {
           style: {
             backgroundColor: "#404040",
             color: "#d4d4d4",

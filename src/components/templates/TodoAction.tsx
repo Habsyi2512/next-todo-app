@@ -5,12 +5,13 @@ import { CheckCircleIcon } from "../icons/CheckCircleIcon";
 import { RemoveIcon } from "../icons/RemoveIcon";
 import { PencilIcon } from "../icons/PencilIcon";
 import { TrashIcon } from "../icons/TrashIcon";
-import useHandleCompleteTodo from "@/hooks/useHandleCompleteTodo";
-import useHandleRemoveTodo from "@/hooks/useHandleRemoveTodo";
+import useHandleCompleteTodo from "@/hooks/todo/useHandleCompleteTodo";
+import useHandleRemoveTodo from "@/hooks/todo/useHandleRemoveTodo";
+import useHandleRestoreTodo from "@/hooks/todo/useHandleRestoreTodo";
 import { RecoverIcon } from "../icons/RecoverIcon";
 import { EllipsisVerticalIcon } from "../icons/EllipsisVerticalIcon";
 import { TypeTodo } from "@/types/interface";
-
+import GlobalLoading from "../GlobalLoading";
 
 interface TodoActionProps {
   todo: TypeTodo;
@@ -27,10 +28,12 @@ interface ActionItem {
 
 const TodoAction: React.FC<TodoActionProps> = ({ todo }) => {
   const [dropdown, setDropdown] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const { handleCompleteButton } = useHandleCompleteTodo();
   const { handleRemoveButton } = useHandleRemoveTodo();
+  const { handleRestoreButton } = useHandleRestoreTodo();
 
   const handleDropdownToggle = useCallback(() => {
     setDropdown((prev) => !prev);
@@ -64,7 +67,13 @@ const TodoAction: React.FC<TodoActionProps> = ({ todo }) => {
       id: "remove",
       icon: <RemoveIcon className="size-4" />,
       text: "Remove",
-      onClick: () => handleRemoveButton(todo.id),
+      onClick: async () => {
+        setLoading(true);
+        const result = await handleRemoveButton(todo.id);
+        if (result) {
+          setLoading(false);
+        }
+      },
       disabled: todo.deleted_at !== null,
     },
     {
@@ -78,7 +87,13 @@ const TodoAction: React.FC<TodoActionProps> = ({ todo }) => {
       id: "restore",
       icon: <RecoverIcon className="size-4" />,
       text: "Restore",
-      onClick: () => {},
+      onClick: async() => {
+        setLoading(true);
+        const result = await handleRestoreButton(todo.id);
+        if(result){
+          setLoading(false);
+        }
+      },
       visible: todo.deleted_at === null,
     },
     {
@@ -90,10 +105,9 @@ const TodoAction: React.FC<TodoActionProps> = ({ todo }) => {
     },
   ];
 
-
-
   return (
     <ContentDiv className="flex space-x-2 items-center">
+      {loading && <GlobalLoading />}
       {/* <div onClick={getTimeInIndonesiaTimezone}>klik</div> */}
       <div className="relative" ref={dropdownRef}>
         <button

@@ -1,0 +1,40 @@
+.my-loader {
+  @apply w-[100px] h-[100px] mx-auto my-[50px];
+  perspective: 500px;
+}
+.rubiks-cube {
+  @apply w-full h-full relative animate-[my-rotateCube_5s_infinite_linear];
+  transform-style: preserve-3d;
+}
+.my-loader .face {
+  @apply absolute flex flex-wrap w-full h-full;
+}
+.my-loader .face.front {
+  transform: translateZ(50px);
+}
+.my-loader .face.back {
+  transform: rotateY(180deg) translateZ(50px);
+}
+.my-loader .face.left {
+  transform: rotateY(-90deg) translateZ(50px);
+}
+.my-loader .face.right {
+  transform: rotateY(90deg) translateZ(50px);
+}
+.my-loader .face.top {
+  transform: rotateX(90deg) translateZ(50px);
+}
+.my-loader .face.bottom {
+  transform: rotateX(-90deg) translateZ(50px);
+}
+.my-loader .cube {
+  @apply w-[calc(100%_/_3)] h-[calc(100%_/_3)] box-border border border-solid border-black;
+}
+@keyframes my-rotateCube {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg);
+  }
+  100% {
+    transform: rotateX(360deg) rotateY(360deg);
+  }
+}

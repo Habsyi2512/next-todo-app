@@ -1,6 +1,6 @@
-import useReload from "@/hooks/useReload";
-import { handleCompletedTodo } from "@/actions/actions";
+import useReload from "@/hooks/todo/useReload";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 export default function useHandleCompleteTodo() {
   const { reloadIncompleteTodos, reloadCompletedTodos } = useReload();
@@ -11,15 +11,16 @@ export default function useHandleCompleteTodo() {
       : "Task has been set to Incomplete.";
 
     try {
-      const success = await handleCompletedTodo(id, setCompleted); // Fungsi untuk menyelesaikan todo
-      toast.success(message, {
-        style: {
-          backgroundColor: "#404040",
-          color: "#d4d4d4",
-        },
+      const success = await axios.put(`/api/todo/${id}/completed`, {
+        completed: setCompleted,
       });
-
-      if (success) {
+      if (success.status === 200) {
+        toast.success(message, {
+          style: {
+            backgroundColor: "#404040",
+            color: "#d4d4d4",
+          },
+        });
         if (setCompleted) {
           await reloadIncompleteTodos(); // Reload todos yang belum selesai
         } else {
