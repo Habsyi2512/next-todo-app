@@ -10,7 +10,6 @@ export default async function IncompleteTodoList() {
     { cache: "force-cache", next: { tags: ["incomplete-todos"] } }
   ).then((res) => res.json())) as { message: string; data: TypeTodo[] };
 
-  
   if (data.data.length === 0) return <p>No Data...</p>;
 
   return (

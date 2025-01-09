@@ -4,24 +4,28 @@ import React, { useContext, useState } from "react";
 import { TodoValidation } from "@/lib/validationSchema";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import toast from "react-hot-toast";
-// import useReload from "@/hooks/todo/useReload";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function CreateForm() {
+  const router = useRouter();
   const { setIsOpenCreateForm } = useContext(ModalContext);
   const [isSubmitting, setIsSubmitting] = useState(false);
   async function handleSubmit(values: { title: string }) {
     setIsSubmitting(true);
     try {
-      const formData = new FormData();
-      formData.append("title", values.title);
       const data = await axios.post("/api/todo/create-todo", {
         title: values.title,
       });
       if (data.status === 201) {
         setIsOpenCreateForm(false);
         setIsSubmitting(false);
-        await axios.post("/api/revalidate?tag=incomplete-todos");
+        const revalidate = await axios.post(
+          "/api/revalidate?tag=incomplete-todos&secret=12345"
+        );
+        if (revalidate.status === 200) {
+          router.refresh();
+        }
         toast.success("Success! Todo Created", {
           style: {
             backgroundColor: "#404040",
