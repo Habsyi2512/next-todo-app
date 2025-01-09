@@ -1,25 +1,27 @@
 "use client";
 import { ModalContext } from "@/context/ModalContext";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { TodoValidation } from "@/lib/validationSchema";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import toast from "react-hot-toast";
-import useReload from "@/hooks/todo/useReload";
-import axios, { AxiosResponse } from "axios";
+// import useReload from "@/hooks/todo/useReload";
+import axios from "axios";
 
 export default function CreateForm() {
   const { setIsOpenCreateForm } = useContext(ModalContext);
-  const { reloadIncompleteTodos } = useReload();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   async function handleSubmit(values: { title: string }) {
+    setIsSubmitting(true);
     try {
       const formData = new FormData();
       formData.append("title", values.title);
-      const data: AxiosResponse = await axios.post("/api/todo/create-todo", {
+      const data = await axios.post("/api/todo/create-todo", {
         title: values.title,
       });
-      setIsOpenCreateForm(false);
       if (data.status === 201) {
-        await reloadIncompleteTodos();
+        setIsOpenCreateForm(false);
+        setIsSubmitting(false);
+        await axios.post("/api/revalidate?tag=incomplete-todos");
         toast.success("Success! Todo Created", {
           style: {
             backgroundColor: "#404040",
@@ -55,9 +57,10 @@ export default function CreateForm() {
 
         <button
           type="submit"
+          disabled={isSubmitting}
           className="block px-4 py-2 rounded-lg hover:bg-green-700 active:bg-green-600 bg-green-600 "
         >
-          buat todo
+          {isSubmitting ? "Creating..." : "Create"}
         </button>
       </Form>
     </Formik>

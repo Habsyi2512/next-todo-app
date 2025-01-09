@@ -12,6 +12,7 @@ import { RecoverIcon } from "../icons/RecoverIcon";
 import { EllipsisVerticalIcon } from "../icons/EllipsisVerticalIcon";
 import { TypeTodo } from "@/types/interface";
 import GlobalLoading from "../GlobalLoading";
+import axios from "axios";
 
 interface TodoActionProps {
   todo: TypeTodo;
@@ -71,7 +72,9 @@ const TodoAction: React.FC<TodoActionProps> = ({ todo }) => {
         setLoading(true);
         const result = await handleRemoveButton(todo.id);
         if (result) {
+          await axios.post("/api/revalidate?tag=incomplete-todos");
           setLoading(false);
+          setDropdown(false);
         }
       },
       disabled: todo.deleted_at !== null,
@@ -87,11 +90,12 @@ const TodoAction: React.FC<TodoActionProps> = ({ todo }) => {
       id: "restore",
       icon: <RecoverIcon className="size-4" />,
       text: "Restore",
-      onClick: async() => {
+      onClick: async () => {
         setLoading(true);
         const result = await handleRestoreButton(todo.id);
-        if(result){
+        if (result) {
           setLoading(false);
+          setDropdown(false);
         }
       },
       visible: todo.deleted_at === null,

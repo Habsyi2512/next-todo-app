@@ -9,20 +9,6 @@
       "server": "localhost",
       "port": 3306,
       "driver": "MySQL",
-      "username": "root",
-      "password": "root",
-      "database": "umy",
-      "name": "mydatabse"
-    },
-    {
-      "mysqlOptions": {
-        "authProtocol": "default",
-        "enableSsl": "Disabled"
-      },
-      "previewLimit": 50,
-      "server": "localhost",
-      "port": 3306,
-      "driver": "MySQL",
       "database": "db_todo",
       "username": "root",
       "name": "todo app",

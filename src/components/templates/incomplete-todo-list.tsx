@@ -1,40 +1,21 @@
-"use client";
-import React, { useContext, useEffect } from "react";
 import Card from "@/components/Card";
 import ContentDiv from "@/components/ContentDiv";
-import { TodoContext } from "@/context/TodoContext";
 import TodoAction from "./TodoAction";
-import { LoadingContext } from "@/context/LoadingContext";
-import { getIncompleteTodos } from "@/actions/fetch";
 import { getFormattedDate } from "@/utils/dateUtils";
+import { TypeTodo } from "@/types/interface";
 
-export default function IncompleteTodoList() {
-  const { incompleteTodos, setIncompleteTodos } = useContext(TodoContext);
-  const { loading, setLoading } = useContext(LoadingContext);
+export default async function IncompleteTodoList() {
+  const data = (await fetch(
+    "http://localhost:3000/api/todo/get-incomplete-todos",
+    { cache: "force-cache", next: { tags: ["incomplete-todos"] } }
+  ).then((res) => res.json())) as { message: string; data: TypeTodo[] };
 
-  useEffect(() => {
-    const fetchIncompleteTodo = async () => {
-      setLoading(true);
-      try {
-        const todos = await getIncompleteTodos();
-        setIncompleteTodos(todos);
-      } catch (error) {
-        console.error("Error fetching todos:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchIncompleteTodo();
-  }, [setIncompleteTodos, setLoading]); // Menambahkan dependensi yang tepat
-
-  // Render berdasarkan kondisi loading dan data todos
-  if (loading) return <div>Loading...</div>;
-  if (incompleteTodos.length === 0) return <div>Add your first todo</div>;
+  
+  if (data.data.length === 0) return <p>No Data...</p>;
 
   return (
     <div className="space-y-3">
-      {incompleteTodos.map((todo) => (
+      {data.data.map((todo: TypeTodo) => (
         <Card key={todo.id} className="flex items-center">
           <ContentDiv className="flex-1 rounded-lg">
             <p className="mb-1">{todo.title}</p>
