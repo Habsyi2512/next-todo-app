@@ -1,18 +1,15 @@
 import toast from "react-hot-toast";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { API_ENDPOINTS } from "@/constants/api";
-import { revalidateTodos } from "@/services/api/todoServices";
+import { deleteTodoById, revalidateTodos } from "@/services/api/todoServices";
 
 export default function useHandleDeleteTodo() {
   const router = useRouter();
 
   const handleDeleteTodo = async (id: number) => {
     try {
-      const success = await axios.delete(
-        API_ENDPOINTS.TODO.DELETE_BY_ID(id.toString())
-      );
-      if (success.status === 200) {
+      const success = await deleteTodoById(id.toString());
+      if (success?.status === 200) {
         await revalidateTodos([API_ENDPOINTS.REVALIDATE.TODO.REMOVED_TODOS]);
         toast.success("Todo has been successfully deleted", {
           style: {

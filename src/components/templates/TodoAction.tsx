@@ -15,6 +15,7 @@ import { TrashIcon } from "../icons/TrashIcon";
 import useHandleCompleteTodo from "@/hooks/todo/useHandleCompleteTodo";
 import useHandleRemoveTodo from "@/hooks/todo/useHandleRemoveTodo";
 import useHandleRestoreTodo from "@/hooks/todo/useHandleRestoreTodo";
+import useHandleDeleteTodo from "@/hooks/todo/useHandleDeleteTodo";
 import { RecoverIcon } from "../icons/RecoverIcon";
 import { EllipsisVerticalIcon } from "../icons/EllipsisVerticalIcon";
 import { TypeTodo } from "@/types/interface";
@@ -44,6 +45,7 @@ const TodoAction: React.FC<TodoActionProps> = ({ todo }) => {
   const { handleCompleteTodo } = useHandleCompleteTodo();
   const { handleRemoveTodo } = useHandleRemoveTodo();
   const { handleRestoreTodo } = useHandleRestoreTodo();
+  const { handleDeleteTodo } = useHandleDeleteTodo();
 
   const handleDropdownToggle = useCallback(() => {
     setDropdown((prev) => !prev);
@@ -132,7 +134,17 @@ const TodoAction: React.FC<TodoActionProps> = ({ todo }) => {
   return (
     <ContentDiv className="flex space-x-2 items-center">
       {isOpenDeleteModal && (
-        <DeleteModal onClick={() => {}} onClose={setIsOpenDeleteModal} />
+        <DeleteModal
+          onClick={async () => {
+            setLoading(true);
+            const result = await handleDeleteTodo(todo.id);
+            if (result) {
+              setIsOpenDeleteModal(false);
+              setLoading(false);
+            }
+          }}
+          onClose={setIsOpenDeleteModal}
+        />
       )}
       {loading && <GlobalLoading />}
       <div className="relative" ref={dropdownRef}>
