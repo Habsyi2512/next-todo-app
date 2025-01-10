@@ -1,29 +1,60 @@
+import { API_ENDPOINTS } from "@/constants/api";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import useReload from "./useReload";
+
+// Toast styling function for reuse
+const toastStyles = {
+  backgroundColor: "#404040",
+  color: "#d4d4d4",
+};
+
+async function removeTodoById(id: string) {
+  try {
+    const response = await axios.put(API_ENDPOINTS.TODO.REMOVE_BY_ID(id));
+    return response;
+  } catch (error) {
+    console.error("Error removing todo:", error);
+  }
+}
+
+async function revalidateTodos() {
+  try {
+    await axios.post(API_ENDPOINTS.REVALIDATE.TODO.INCOMPLETE_TODOS);
+    await axios.post(API_ENDPOINTS.REVALIDATE.TODO.REMOVED_TODOS);
+  } catch (error) {
+    console.error("Error revalidating todo:", error);
+  }
+}
 
 export default function useHandleRemoveTodo() {
-  const { reloadIncompleteTodos, reloadCompletedTodos } = useReload();
+  const router = useRouter();
 
-  const handleRemoveButton = async (id: number) => {
+  const handleRemoveTodo = async (id: number) => {
     try {
-      const result = await axios.put(`/api/todo/${id}/remove`);
-      if (result.status === 200) {
-        toast.success("Todo has been successfully Removed", {
-          style: {
-            backgroundColor: "#404040",
-            color: "#d4d4d4",
-          },
+      const result = await removeTodoById(id.toString());
+
+      if (result?.status === 200) {
+        toast.success("Todo has been successfully removed", {
+          style: toastStyles,
         });
-        await reloadIncompleteTodos();
-        await reloadCompletedTodos();
+
+        // Revalidate the todos
+        await revalidateTodos();
+
+        // Refresh the page
+        router.refresh();
       }
+
       return true;
-    } catch (err) {
-      console.error("Error marking todo as completed:", err);
+    } catch (error) {
+      console.error("Error removing todo:", error);
+      toast.error("Something went wrong while removing the todo.", {
+        style: toastStyles,
+      });
       return false;
     }
   };
 
-  return { handleRemoveButton };
+  return { handleRemoveTodo };
 }

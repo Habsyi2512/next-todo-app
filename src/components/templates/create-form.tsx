@@ -6,6 +6,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { API_ENDPOINTS } from "@/constants/api";
 
 export default function CreateForm() {
   const router = useRouter();
@@ -14,14 +15,14 @@ export default function CreateForm() {
   async function handleSubmit(values: { title: string }) {
     setIsSubmitting(true);
     try {
-      const data = await axios.post("/api/todo/create-todo", {
+      const data = await axios.post(API_ENDPOINTS.TODO.CREATE_TODO, {
         title: values.title,
       });
       if (data.status === 201) {
         setIsOpenCreateForm(false);
         setIsSubmitting(false);
         const revalidate = await axios.post(
-          "/api/revalidate?tag=incomplete-todos&secret=12345"
+          API_ENDPOINTS.REVALIDATE.TODO.INCOMPLETE_TODOS
         );
         if (revalidate.status === 200) {
           router.refresh();

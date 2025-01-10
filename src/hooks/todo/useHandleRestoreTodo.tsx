@@ -4,7 +4,7 @@ import useReload from "./useReload";
 
 export default function useHandleRestoreTodo() {
   const { reloadRemovedTodos } = useReload();
-  async function handleRestoreButton(id: number) {
+  async function handleRestoreTodo(id: number) {
     try {
       const result = await axios.put(`/api/todo/${id}/restore`);
       if (result.status === 200) {
@@ -22,5 +22,5 @@ export default function useHandleRestoreTodo() {
       return false;
     }
   }
-  return { handleRestoreButton };
+  return { handleRestoreTodo };
 }

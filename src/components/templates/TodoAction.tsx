@@ -12,7 +12,6 @@ import { RecoverIcon } from "../icons/RecoverIcon";
 import { EllipsisVerticalIcon } from "../icons/EllipsisVerticalIcon";
 import { TypeTodo } from "@/types/interface";
 import GlobalLoading from "../GlobalLoading";
-import axios from "axios";
 
 interface TodoActionProps {
   todo: TypeTodo;
@@ -32,9 +31,9 @@ const TodoAction: React.FC<TodoActionProps> = ({ todo }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const { handleCompleteButton } = useHandleCompleteTodo();
-  const { handleRemoveButton } = useHandleRemoveTodo();
-  const { handleRestoreButton } = useHandleRestoreTodo();
+  const { handleCompleteTodo } = useHandleCompleteTodo();
+  const { handleRemoveTodo } = useHandleRemoveTodo();
+  const { handleRestoreTodo } = useHandleRestoreTodo();
 
   const handleDropdownToggle = useCallback(() => {
     setDropdown((prev) => !prev);
@@ -61,7 +60,7 @@ const TodoAction: React.FC<TodoActionProps> = ({ todo }) => {
       id: "complete",
       icon: <CheckCircleIcon className="size-4" />,
       text: todo.completed ? "Mark as incompleted" : "Mark as completed",
-      onClick: () => handleCompleteButton(todo.id, !todo.completed),
+      onClick: () => handleCompleteTodo(todo.id, !todo.completed),
       visible: todo.deleted_at !== null,
     },
     {
@@ -70,9 +69,8 @@ const TodoAction: React.FC<TodoActionProps> = ({ todo }) => {
       text: "Remove",
       onClick: async () => {
         setLoading(true);
-        const result = await handleRemoveButton(todo.id);
+        const result = await handleRemoveTodo(todo.id);
         if (result) {
-          await axios.post("/api/revalidate?tag=incomplete-todos");
           setLoading(false);
           setDropdown(false);
         }
@@ -92,7 +90,7 @@ const TodoAction: React.FC<TodoActionProps> = ({ todo }) => {
       text: "Restore",
       onClick: async () => {
         setLoading(true);
-        const result = await handleRestoreButton(todo.id);
+        const result = await handleRestoreTodo(todo.id);
         if (result) {
           setLoading(false);
           setDropdown(false);

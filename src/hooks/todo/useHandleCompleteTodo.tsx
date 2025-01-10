@@ -5,7 +5,7 @@ import axios from "axios";
 export default function useHandleCompleteTodo() {
   const { reloadIncompleteTodos, reloadCompletedTodos } = useReload();
 
-  const handleCompleteButton = async (id: number, setCompleted: boolean) => {
+  const handleCompleteTodo = async (id: number, setCompleted: boolean) => {
     const message = setCompleted
       ? "Task has been set to Completed."
       : "Task has been set to Incomplete.";
@@ -32,5 +32,5 @@ export default function useHandleCompleteTodo() {
     }
   };
 
-  return { handleCompleteButton }; // Mengembalikan fungsi yang bisa dipakai di komponen
+  return { handleCompleteTodo }; // Mengembalikan fungsi yang bisa dipakai di komponen
 }
