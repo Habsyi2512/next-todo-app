@@ -40,8 +40,8 @@ interface ActionItem {
 const TodoAction: FC<TodoActionProps> = ({ todo }) => {
   const [dropdown, setDropdown] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const { isOpenDeleteModal, setIsOpenDeleteModal } = useContext(ModalContext);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const { handleCompleteTodo } = useHandleCompleteTodo();
   const { handleRemoveTodo } = useHandleRemoveTodo();
@@ -104,7 +104,7 @@ const TodoAction: FC<TodoActionProps> = ({ todo }) => {
       onClick: () => {
         setDropdown(false);
       },
-      visible: todo.deleted_at !== null,
+      visible: todo.deleted_at !== null || todo.completed !== false,
     },
     {
       id: "restore",

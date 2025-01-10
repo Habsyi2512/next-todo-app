@@ -4,6 +4,7 @@ import { API_ENDPOINTS } from "@/constants/api";
 import { ResponseWrapper, TypeTodo } from "@/types/interface";
 import { Suspense } from "react";
 import { getDataTodos } from "../services/api";
+import GlobalLoading from "@/components/GlobalLoading";
 
 export default function Home() {
   const todos = getDataTodos<ResponseWrapper<TypeTodo[]>>(
@@ -13,7 +14,7 @@ export default function Home() {
   return (
     <>
       <HeaderTodoSection />
-      <Suspense fallback={<div>Loading WOII.....</div>}>
+      <Suspense fallback={<GlobalLoading />}>
         <IncompleteTodoList todos={todos} />
       </Suspense>
     </>

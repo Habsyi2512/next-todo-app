@@ -53,6 +53,7 @@ export default function CreateForm() {
                   name="title"
                   type="text"
                   autoComplete="off"
+                  placeholder="Enter todo title"
                   className="bg-neutral-700 focus:outline-none focus:border focus:border-neutral-500 rounded-md p-2 w-full"
                 />
                 <ErrorMessage
