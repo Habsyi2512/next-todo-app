@@ -3,38 +3,21 @@ import { ModalContext } from "@/context/ModalContext";
 import React, { useContext, useState } from "react";
 import { TodoValidation } from "@/lib/validationSchema";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import toast from "react-hot-toast";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { API_ENDPOINTS } from "@/constants/api";
 import Card from "../Card";
 import Divider from "../Divider";
+import useHandleCreateTodo from "@/hooks/todo/useHandleCreateTodo";
 
 export default function CreateForm() {
-  const router = useRouter();
   const { setIsOpenCreateForm } = useContext(ModalContext);
+  const { handleCreateTodo } = useHandleCreateTodo();
   const [isSubmitting, setIsSubmitting] = useState(false);
   async function handleSubmit(values: { title: string }) {
     setIsSubmitting(true);
     try {
-      const data = await axios.post(API_ENDPOINTS.TODO.CREATE_TODO, {
-        title: values.title,
-      });
-      if (data.status === 201) {
+      const response = await handleCreateTodo(values);
+      if (response) {
         setIsOpenCreateForm(false);
         setIsSubmitting(false);
-        const revalidate = await axios.post(
-          API_ENDPOINTS.REVALIDATE.TODO.INCOMPLETE_TODOS
-        );
-        if (revalidate.status === 200) {
-          router.refresh();
-        }
-        toast.success("Success! Todo Created", {
-          style: {
-            backgroundColor: "#404040",
-            color: "#d4d4d4",
-          },
-        });
       }
     } catch (err) {
       console.error(err);

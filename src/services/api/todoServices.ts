@@ -9,6 +9,17 @@ export async function revalidateTodos(endpoints: string[]) {
   }
 }
 
+export async function createTodo(values:{title:string}){
+  try {
+    const response = await axios.post(API_ENDPOINTS.TODO.CREATE_TODO, {
+      title: values.title,
+    })
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export async function removeTodoById(id: string) {
   try {
     const response = await axios.put(API_ENDPOINTS.TODO.REMOVE_BY_ID(id));
