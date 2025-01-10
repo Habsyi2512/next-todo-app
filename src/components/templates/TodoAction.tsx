@@ -12,6 +12,7 @@ import { RecoverIcon } from "../icons/RecoverIcon";
 import { EllipsisVerticalIcon } from "../icons/EllipsisVerticalIcon";
 import { TypeTodo } from "@/types/interface";
 import GlobalLoading from "../GlobalLoading";
+import DeleteModal from "@/components/modal/DeleteModal"
 
 interface TodoActionProps {
   todo: TypeTodo;
@@ -60,7 +61,14 @@ const TodoAction: React.FC<TodoActionProps> = ({ todo }) => {
       id: "complete",
       icon: <CheckCircleIcon className="size-4" />,
       text: todo.completed ? "Mark as incompleted" : "Mark as completed",
-      onClick: () => handleCompleteTodo(todo.id, !todo.completed),
+      onClick: async () => {
+        setLoading(true);
+        const result = await handleCompleteTodo(todo.id, !todo.completed);
+        if (result) {
+          setLoading(false);
+          setDropdown(false);
+        }
+      },
       visible: todo.deleted_at !== null,
     },
     {
@@ -109,8 +117,8 @@ const TodoAction: React.FC<TodoActionProps> = ({ todo }) => {
 
   return (
     <ContentDiv className="flex space-x-2 items-center">
+      <DeleteModal onClick={()=>{}} onClose={() => {}}/>
       {loading && <GlobalLoading />}
-      {/* <div onClick={getTimeInIndonesiaTimezone}>klik</div> */}
       <div className="relative" ref={dropdownRef}>
         <button
           onClick={handleDropdownToggle}

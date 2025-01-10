@@ -13,6 +13,8 @@ export const API_ENDPOINTS = {
       createApiUrl(`/api/todo/${id}/remove`),
     COMPLETED_BY_ID: (id: string): string =>
       createApiUrl(`/api/todo/${id}/completed`),
+    RESTORE_BY_ID: (id: string): string =>
+      createApiUrl(`/api/todo/${id}/restore`),
   },
   REVALIDATE: {
     TODO: {

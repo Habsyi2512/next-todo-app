@@ -13,6 +13,7 @@ export default function CompletedTodoList({
   todos: Promise<ResponseWrapper<TypeTodo[]>>;
 }) {
   const data = use(todos);
+  console.log("data kuy", data);
   if (data.data.length === 0) return <div>No Completed Todos Here</div>;
 
   return (

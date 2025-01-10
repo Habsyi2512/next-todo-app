@@ -3,7 +3,7 @@ import IncompleteTodoList from "@/components/templates/incomplete-todo-list";
 import { API_ENDPOINTS } from "@/constants/api";
 import { ResponseWrapper, TypeTodo } from "@/types/interface";
 import { Suspense } from "react";
-import { getDataTodos } from "./services/api";
+import { getDataTodos } from "../services/api";
 
 export default function Home() {
   const todos = getDataTodos<ResponseWrapper<TypeTodo[]>>(
