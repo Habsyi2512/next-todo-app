@@ -1,5 +1,12 @@
 "use client";
-import React, { useState, useRef, useCallback, useEffect, JSX } from "react";
+import React, {
+  useState,
+  useRef,
+  useCallback,
+  useEffect,
+  JSX,
+  useContext,
+} from "react";
 import ContentDiv from "../ContentDiv";
 import { CheckCircleIcon } from "../icons/CheckCircleIcon";
 import { RemoveIcon } from "../icons/RemoveIcon";
@@ -12,7 +19,8 @@ import { RecoverIcon } from "../icons/RecoverIcon";
 import { EllipsisVerticalIcon } from "../icons/EllipsisVerticalIcon";
 import { TypeTodo } from "@/types/interface";
 import GlobalLoading from "../GlobalLoading";
-import DeleteModal from "@/components/modal/DeleteModal"
+import DeleteModal from "@/components/modal/DeleteModal";
+import { ModalContext } from "@/context/ModalContext";
 
 interface TodoActionProps {
   todo: TypeTodo;
@@ -31,6 +39,7 @@ const TodoAction: React.FC<TodoActionProps> = ({ todo }) => {
   const [dropdown, setDropdown] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { isOpenDeleteModal, setIsOpenDeleteModal } = useContext(ModalContext);
 
   const { handleCompleteTodo } = useHandleCompleteTodo();
   const { handleRemoveTodo } = useHandleRemoveTodo();
@@ -89,7 +98,9 @@ const TodoAction: React.FC<TodoActionProps> = ({ todo }) => {
       id: "edit",
       icon: <PencilIcon className="size-4" />,
       text: "Edit",
-      onClick: () => {}, // Action for Edit can be added here
+      onClick: () => {
+        setIsOpenDeleteModal(true);
+      },
       visible: todo.deleted_at !== null,
     },
     {
@@ -110,14 +121,19 @@ const TodoAction: React.FC<TodoActionProps> = ({ todo }) => {
       id: "delete",
       icon: <TrashIcon className="size-4" />,
       text: "Delete Permanently",
-      onClick: () => {},
+      onClick: () => {
+        setDropdown(false);
+        setIsOpenDeleteModal(true);
+      },
       visible: todo.deleted_at === null,
     },
   ];
 
   return (
     <ContentDiv className="flex space-x-2 items-center">
-      <DeleteModal onClick={()=>{}} onClose={() => {}}/>
+      {isOpenDeleteModal && (
+        <DeleteModal onClick={() => {}} onClose={setIsOpenDeleteModal} />
+      )}
       {loading && <GlobalLoading />}
       <div className="relative" ref={dropdownRef}>
         <button
