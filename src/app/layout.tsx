@@ -4,7 +4,6 @@ import { ModalProvider } from "@/context/ModalContext";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import { TodoProvider } from "@/context/TodoContext";
 import { LoadingProvider } from "@/context/LoadingContext";
 
 const geistSans = Geist({
@@ -34,12 +33,10 @@ export default function RootLayout({
         <Toaster position="top-right" reverseOrder={false} />
         <LoadingProvider>
           <ModalProvider>
-            <TodoProvider>
-              <main className="w-full max-w-5xl py-16 mx-auto">
-                <Navbar />
-                {children}
-              </main>
-            </TodoProvider>
+            <main className="w-full max-w-5xl py-16 mx-auto">
+              <Navbar />
+              {children}
+            </main>
           </ModalProvider>
         </LoadingProvider>
       </body>
