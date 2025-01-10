@@ -6,6 +6,7 @@ import React, {
   useEffect,
   JSX,
   useContext,
+  type FC,
 } from "react";
 import ContentDiv from "../ContentDiv";
 import { CheckCircleIcon } from "../icons/CheckCircleIcon";
@@ -36,7 +37,7 @@ interface ActionItem {
   visible?: boolean;
 }
 
-const TodoAction: React.FC<TodoActionProps> = ({ todo }) => {
+const TodoAction: FC<TodoActionProps> = ({ todo }) => {
   const [dropdown, setDropdown] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
