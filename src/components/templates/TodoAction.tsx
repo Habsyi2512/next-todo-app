@@ -71,11 +71,11 @@ const TodoAction: React.FC<TodoActionProps> = ({ todo }) => {
       icon: <CheckCircleIcon className="size-4" />,
       text: todo.completed ? "Mark as incompleted" : "Mark as completed",
       onClick: async () => {
+        setDropdown(false);
         setLoading(true);
         const result = await handleCompleteTodo(todo.id, !todo.completed);
         if (result) {
           setLoading(false);
-          setDropdown(false);
         }
       },
       visible: todo.deleted_at !== null,
@@ -86,10 +86,10 @@ const TodoAction: React.FC<TodoActionProps> = ({ todo }) => {
       text: "Remove",
       onClick: async () => {
         setLoading(true);
+        setDropdown(false);
         const result = await handleRemoveTodo(todo.id);
         if (result) {
           setLoading(false);
-          setDropdown(false);
         }
       },
       disabled: todo.deleted_at !== null,
@@ -99,7 +99,7 @@ const TodoAction: React.FC<TodoActionProps> = ({ todo }) => {
       icon: <PencilIcon className="size-4" />,
       text: "Edit",
       onClick: () => {
-        setIsOpenDeleteModal(true);
+        setDropdown(false);
       },
       visible: todo.deleted_at !== null,
     },
@@ -109,10 +109,10 @@ const TodoAction: React.FC<TodoActionProps> = ({ todo }) => {
       text: "Restore",
       onClick: async () => {
         setLoading(true);
+        setDropdown(false);
         const result = await handleRestoreTodo(todo.id);
         if (result) {
           setLoading(false);
-          setDropdown(false);
         }
       },
       visible: todo.deleted_at === null,

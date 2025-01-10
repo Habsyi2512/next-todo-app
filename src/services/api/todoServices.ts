@@ -18,6 +18,15 @@ export async function removeTodoById(id: string) {
   }
 }
 
+export async function deleteTodoById(id: string) {
+  try {
+    const response = await axios.delete(API_ENDPOINTS.TODO.DELETE_BY_ID(id));
+    return response;
+  } catch (error) {
+    console.error("Error deleting todo:", error);
+  }
+}
+
 export async function restoreTodoById(id: string) {
   try {
     const response = await axios.put(API_ENDPOINTS.TODO.RESTORE_BY_ID(id));

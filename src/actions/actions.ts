@@ -25,6 +25,13 @@ export async function removeTodoById(id: number) {
   return updateTodo;
 }
 
+export async function deleteTodoById(id: number) {
+  const updateTodo = await prisma.todo.delete({
+    where: { id: id },
+  });
+  return updateTodo;
+}
+
 export async function restoreTodoById(id: number) {
   const updateTodo = await prisma.todo.update({
     where: { id: id },
