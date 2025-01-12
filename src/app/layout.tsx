@@ -5,6 +5,8 @@ import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { LoadingProvider } from "@/context/LoadingContext";
+import { Suspense } from "react";
+import LoadTodoTemplate from "@/components/templates/load-todo-template";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,7 +37,7 @@ export default function RootLayout({
           <ModalProvider>
             <main className="w-full max-w-5xl py-16 mx-auto">
               <Navbar />
-              {children}
+              <Suspense fallback={<LoadTodoTemplate />}>{children}</Suspense>
             </main>
           </ModalProvider>
         </LoadingProvider>

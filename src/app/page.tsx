@@ -4,9 +4,9 @@ import { API_ENDPOINTS } from "@/constants/api";
 import { ResponseWrapper, TypeTodo } from "@/types/interface";
 import { Suspense } from "react";
 import { getDataTodos } from "../services/api";
-import GlobalLoading from "@/components/GlobalLoading";
+import LoadTodoTemplate from "@/components/templates/load-todo-template";
 
-export default function Home() {
+export default async function Home() {
   const todos = getDataTodos<ResponseWrapper<TypeTodo[]>>(
     API_ENDPOINTS.TODO.GET_INCLOMPLETE_TODOS,
     { cache: "force-cache", next: { tags: ["incomplete-todos"] } }
@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <>
       <HeaderTodoSection />
-      <Suspense fallback={<GlobalLoading />}>
+      <Suspense fallback={<LoadTodoTemplate />}>
         <IncompleteTodoList todos={todos} />
       </Suspense>
     </>
