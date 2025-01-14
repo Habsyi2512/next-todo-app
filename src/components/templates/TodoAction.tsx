@@ -8,21 +8,22 @@ import React, {
   useContext,
   type FC,
 } from "react";
-import ContentDiv from "../ContentDiv";
+
 import { CheckCircleIcon } from "../icons/CheckCircleIcon";
 import { RemoveIcon } from "../icons/RemoveIcon";
 import { PencilIcon } from "../icons/PencilIcon";
 import { TrashIcon } from "../icons/TrashIcon";
+import { RecoverIcon } from "../icons/RecoverIcon";
+import { EllipsisVerticalIcon } from "../icons/EllipsisVerticalIcon";
+import { TypeTodo } from "@/types/interface";
+import { ModalContext } from "@/context/ModalContext";
+import GlobalLoading from "../GlobalLoading";
+import DeleteModal from "@/components/modal/DeleteModal";
 import useHandleCompleteTodo from "@/hooks/todo/useHandleCompleteTodo";
 import useHandleRemoveTodo from "@/hooks/todo/useHandleRemoveTodo";
 import useHandleRestoreTodo from "@/hooks/todo/useHandleRestoreTodo";
 import useHandleDeleteTodo from "@/hooks/todo/useHandleDeleteTodo";
-import { RecoverIcon } from "../icons/RecoverIcon";
-import { EllipsisVerticalIcon } from "../icons/EllipsisVerticalIcon";
-import { TypeTodo } from "@/types/interface";
-import GlobalLoading from "../GlobalLoading";
-import DeleteModal from "@/components/modal/DeleteModal";
-import { ModalContext } from "@/context/ModalContext";
+import ContentDiv from "../ContentDiv";
 
 interface TodoActionProps {
   todo: TypeTodo;
