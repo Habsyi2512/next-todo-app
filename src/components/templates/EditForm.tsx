@@ -8,7 +8,7 @@ import Divider from "../Divider";
 import useHandleCreateTodo from "@/hooks/todo/useHandleCreateTodo";
 
 export default function EditForm() {
-  const { setIsOpenCreateForm } = useModalContext();
+  const { setIsOpenEditForm } = useModalContext();
   const { handleCreateTodo } = useHandleCreateTodo();
   const [isSubmitting, setIsSubmitting] = useState(false);
   async function handleSubmit(values: { title: string }) {
@@ -16,7 +16,7 @@ export default function EditForm() {
     try {
       const response = await handleCreateTodo(values);
       if (response) {
-        setIsOpenCreateForm(false);
+        setIsOpenEditForm(false);
         setIsSubmitting(false);
       }
     } catch (err) {
@@ -31,7 +31,7 @@ export default function EditForm() {
         <header className="px-5 pt-5 flex items-center justify-between">
           <h1 className="text-lg font-semibold">Add Todo</h1>
           <button
-            onClick={() => setIsOpenCreateForm(false)}
+            onClick={() => setIsOpenEditForm(false)}
             className="px-4 py-2 hover:bg-neutral-500 transition-colors rounded-lg"
           >
             Close

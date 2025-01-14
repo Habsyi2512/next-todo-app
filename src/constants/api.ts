@@ -9,6 +9,8 @@ export const API_ENDPOINTS = {
     GET_INCLOMPLETE_TODOS: createApiUrl("/api/todo/get-incomplete-todos"),
     GET_COMPLETED_TODOS: createApiUrl("/api/todo/get-completed-todos"),
     GET_REMOVED_TODOS: createApiUrl("/api/todo/get-removed-todos"),
+    EDIT_TODO: (id: string) => createApiUrl(`/api/todo/${id}/edit-todo-title`),
+
     REMOVE_BY_ID: (id: string): string =>
       createApiUrl(`/api/todo/${id}/remove`),
     COMPLETED_BY_ID: (id: string): string =>

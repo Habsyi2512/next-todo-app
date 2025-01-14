@@ -9,11 +9,23 @@ export async function revalidateTodos(endpoints: string[]) {
   }
 }
 
-export async function createTodo(values:{title:string}){
+export async function createTodo(values: { title: string }) {
   try {
     const response = await axios.post(API_ENDPOINTS.TODO.CREATE_TODO, {
       title: values.title,
-    })
+    });
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function editTodo(values: { id: string; title: string }) {
+  const { id, title } = values;
+  try {
+    const response = await axios.patch(API_ENDPOINTS.TODO.EDIT_TODO(id), {
+      title: title,
+    });
     return response;
   } catch (error) {
     console.error(error);
