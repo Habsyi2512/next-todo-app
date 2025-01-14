@@ -1,6 +1,6 @@
 "use client";
-import { ModalContext } from "@/context/ModalContext";
-import React, { useContext, useState } from "react";
+import { useModalContext } from "@/context/ModalContext";
+import React, { useState } from "react";
 import { TodoValidation } from "@/lib/validationSchema";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Card from "../Card";
@@ -8,7 +8,7 @@ import Divider from "../Divider";
 import useHandleCreateTodo from "@/hooks/todo/useHandleCreateTodo";
 
 export default function CreateForm() {
-  const { setIsOpenCreateForm } = useContext(ModalContext);
+  const { setIsOpenCreateForm } = useModalContext();
   const { handleCreateTodo } = useHandleCreateTodo();
   const [isSubmitting, setIsSubmitting] = useState(false);
   async function handleSubmit(values: { title: string }) {
