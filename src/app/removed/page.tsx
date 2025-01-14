@@ -1,5 +1,5 @@
 import React from "react";
-import RemovedTodoList from "@/components/templates/removed-todo-list";
+import RemovedTodoList from "@/components/templates/RemoveTodoList";
 import { getDataTodos } from "../../services/api";
 import { API_ENDPOINTS } from "@/constants/api";
 import { ResponseWrapper, TypeTodo } from "@/types/interface";

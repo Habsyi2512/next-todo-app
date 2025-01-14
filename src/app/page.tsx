@@ -1,10 +1,10 @@
 import HeaderTodoSection from "@/components/templates/HeaderTodoSection";
-import IncompleteTodoList from "@/components/templates/incomplete-todo-list";
+import IncompleteTodoList from "@/components/templates/IncompleteTodoList";
 import { API_ENDPOINTS } from "@/constants/api";
 import { ResponseWrapper, TypeTodo } from "@/types/interface";
 import { Suspense } from "react";
 import { getDataTodos } from "../services/api";
-import LoadTodoTemplate from "@/components/templates/load-todo-template";
+import LoadTodoTemplate from "@/components/templates/LoadTodoTemplate";
 
 export default async function Home() {
   const todos = getDataTodos<ResponseWrapper<TypeTodo[]>>(

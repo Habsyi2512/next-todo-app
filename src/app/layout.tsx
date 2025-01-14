@@ -6,7 +6,9 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { LoadingProvider } from "@/context/LoadingContext";
 import { Suspense } from "react";
-import LoadTodoTemplate from "@/components/templates/load-todo-template";
+import LoadTodoTemplate from "@/components/templates/LoadTodoTemplate";
+import EditFormProvider from "@/context/EditFormContext";
+import ModalContainer from "@/components/templates/ModalContainer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,10 +37,13 @@ export default function RootLayout({
         <Toaster position="top-right" reverseOrder={false} />
         <LoadingProvider>
           <ModalProvider>
-            <main className="w-full max-w-5xl py-16 mx-auto">
-              <Navbar />
-              <Suspense fallback={<LoadTodoTemplate />}>{children}</Suspense>
-            </main>
+            <EditFormProvider>
+              <ModalContainer />
+              <main className="w-full max-w-5xl py-16 mx-auto">
+                <Navbar />
+                <Suspense fallback={<LoadTodoTemplate />}>{children}</Suspense>
+              </main>
+            </EditFormProvider>
           </ModalProvider>
         </LoadingProvider>
       </body>

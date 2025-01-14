@@ -5,7 +5,6 @@ import React, {
   useCallback,
   useEffect,
   JSX,
-  useContext,
   type FC,
 } from "react";
 
@@ -16,7 +15,7 @@ import { TrashIcon } from "../icons/TrashIcon";
 import { RecoverIcon } from "../icons/RecoverIcon";
 import { EllipsisVerticalIcon } from "../icons/EllipsisVerticalIcon";
 import { TypeTodo } from "@/types/interface";
-import { ModalContext } from "@/context/ModalContext";
+import { useModalContext } from "@/context/ModalContext";
 import GlobalLoading from "../GlobalLoading";
 import DeleteModal from "@/components/modal/DeleteModal";
 import useHandleCompleteTodo from "@/hooks/todo/useHandleCompleteTodo";
@@ -24,6 +23,7 @@ import useHandleRemoveTodo from "@/hooks/todo/useHandleRemoveTodo";
 import useHandleRestoreTodo from "@/hooks/todo/useHandleRestoreTodo";
 import useHandleDeleteTodo from "@/hooks/todo/useHandleDeleteTodo";
 import ContentDiv from "../ContentDiv";
+import { useEditFormContext } from "@/context/EditFormContext";
 
 interface TodoActionProps {
   todo: TypeTodo;
@@ -41,7 +41,8 @@ interface ActionItem {
 const TodoAction: FC<TodoActionProps> = ({ todo }) => {
   const [dropdown, setDropdown] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const { isOpenDeleteModal, setIsOpenDeleteModal } = useContext(ModalContext);
+  const { isOpenDeleteModal, setIsOpenDeleteModal } = useModalContext();
+  const {} = useEditFormContext();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const { handleCompleteTodo } = useHandleCompleteTodo();

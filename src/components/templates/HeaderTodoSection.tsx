@@ -1,15 +1,13 @@
 "use client";
 
-import React, { useContext } from "react";
-import { ModalContext } from "@/context/ModalContext";
+import React from "react";
+import { useModalContext } from "@/context/ModalContext";
 import ButtonIcon from "../ButtonIcon";
-import CreateForm from "./create-form";
 
 export default function HeaderTodoSection() {
-  const { isOpenCreateForm, setIsOpenCreateForm } = useContext(ModalContext);
+  const { setIsOpenCreateForm } = useModalContext();
   return (
     <>
-      {isOpenCreateForm && <CreateForm />}
       <div className="space-x-3">
         <ButtonIcon
           onClick={() => setIsOpenCreateForm(true)}
