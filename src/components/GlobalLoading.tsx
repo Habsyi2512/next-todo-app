@@ -5,6 +5,7 @@ export default function GlobalLoading() {
   return (
     <div className="fixed top-0 left-0 w-full h-screen bg-neutral-900/50 flex items-center justify-center z-50">
       <div className="my-loader">
+        
         <div className="rubiks-cube">
           <div className="face front">
             <div style={{ background: "#ff3d00" }} className="cube" />

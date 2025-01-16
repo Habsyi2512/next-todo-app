@@ -41,7 +41,8 @@ interface ActionItem {
 const TodoAction: FC<TodoActionProps> = ({ todo }) => {
   const [dropdown, setDropdown] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const { isOpenDeleteModal, setIsOpenDeleteModal } = useModalContext();
+  const { isOpenDeleteModal, setIsOpenDeleteModal, setIsOpenEditForm } =
+    useModalContext();
   const {} = useEditFormContext();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -49,6 +50,7 @@ const TodoAction: FC<TodoActionProps> = ({ todo }) => {
   const { handleRemoveTodo } = useHandleRemoveTodo();
   const { handleRestoreTodo } = useHandleRestoreTodo();
   const { handleDeleteTodo } = useHandleDeleteTodo();
+  const { setDataEditForm } = useEditFormContext();
 
   const handleDropdownToggle = useCallback(() => {
     setDropdown((prev) => !prev);
@@ -104,7 +106,9 @@ const TodoAction: FC<TodoActionProps> = ({ todo }) => {
       icon: <PencilIcon className="size-4" />,
       text: "Edit",
       onClick: () => {
+        setDataEditForm({ id: todo.id, title: todo.title });
         setDropdown(false);
+        setIsOpenEditForm(true);
       },
       visible: todo.deleted_at !== null || todo.completed !== false,
     },

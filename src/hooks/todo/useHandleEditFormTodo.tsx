@@ -11,7 +11,7 @@ export default function useHandleEditFormTodo() {
       const updateTodo = await editTodo({ id, title });
       if (updateTodo?.status == 200) {
         await revalidateTodos([API_ENDPOINTS.REVALIDATE.TODO.INCOMPLETE_TODOS]);
-        toast.success("Todo has been created successfully", {
+        toast.success("Todo has been Edited Successfully", {
           style: {
             backgroundColor: "#404040",
             color: "#d4d4d4",
