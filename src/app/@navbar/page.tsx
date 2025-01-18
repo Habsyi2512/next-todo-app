@@ -1,9 +1,10 @@
 "use client";
 
+import Divider from "@/components/Divider";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import Divider from "./Divider";
 
 export default function Navbar() {
   const pathname = usePathname();

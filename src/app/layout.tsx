@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ModalProvider } from "@/context/ModalContext";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
 import { LoadingProvider } from "@/context/LoadingContext";
 import { Suspense } from "react";
 import LoadTodoTemplate from "@/components/templates/LoadTodoTemplate";
@@ -26,8 +25,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  navbar,
 }: Readonly<{
   children: React.ReactNode;
+  navbar: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -40,7 +41,7 @@ export default function RootLayout({
             <EditFormProvider>
               <ModalContainer />
               <main className="w-full max-w-5xl py-16 mx-auto">
-                <Navbar />
+                <div>{navbar}</div>
                 <Suspense fallback={<LoadTodoTemplate />}>{children}</Suspense>
               </main>
             </EditFormProvider>
