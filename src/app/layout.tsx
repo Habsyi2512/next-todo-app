@@ -41,7 +41,7 @@ export default function RootLayout({
             <EditFormProvider>
               <ModalContainer />
               <main className="w-full max-w-5xl py-16 mx-auto">
-                <div>{navbar}</div>
+                {navbar}
                 <Suspense fallback={<LoadTodoTemplate />}>{children}</Suspense>
               </main>
             </EditFormProvider>
