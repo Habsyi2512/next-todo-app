@@ -5,16 +5,13 @@ import { ResponseWrapper, TypeTodo } from "@/types/interface";
 import { Suspense } from "react";
 import { getDataTodos } from "../services/api";
 import LoadTodoTemplate from "@/components/templates/LoadTodoTemplate";
-import bcrypt from "bcrypt";
 
 export default async function Home() {
   const todos = getDataTodos<ResponseWrapper<TypeTodo[]>>(
     API_ENDPOINTS.TODO.GET_INCLOMPLETE_TODOS,
     { cache: "force-cache", next: { tags: ["incomplete-todos"] } }
   );
-  const password: string = "naruto";
-  const hashedPassword: string = await bcrypt.hash("hsl256", password);
-  console.log("password = ", hashedPassword);
+
   return (
     <>
       <HeaderTodoSection />
