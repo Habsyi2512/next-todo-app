@@ -18,6 +18,7 @@ export default async function Home() {
       <Suspense fallback={<LoadTodoTemplate />}>
         <IncompleteTodoList todos={todos} />
       </Suspense>
+      <div>daftar pemain</div>
     </>
   );
 }
