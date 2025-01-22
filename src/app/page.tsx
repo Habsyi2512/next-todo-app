@@ -17,6 +17,7 @@ export default async function Home() {
       <HeaderTodoSection />
       <Suspense fallback={<LoadTodoTemplate />}>
         <IncompleteTodoList todos={todos} />
+        <dialog>halo world</dialog>
       </Suspense>
     </>
   );
