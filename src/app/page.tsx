@@ -12,12 +12,16 @@ export default async function Home() {
     { cache: "force-cache", next: { tags: ["incomplete-todos"] } }
   );
 
+  const angka = (nme: string) => {
+    return nme;
+  };
+  console.trace(angka("ke"));
+
   return (
     <>
       <HeaderTodoSection />
       <Suspense fallback={<LoadTodoTemplate />}>
         <IncompleteTodoList todos={todos} />
-        <dialog>halo world</dialog>
       </Suspense>
     </>
   );
